@@ -4,6 +4,10 @@
  * Module dependencies.
  */
 
+const emailQueue= require('../queues/emailQueue');
+const chatSocket= require('../sockets/chatSocket');
+const {Server} = require('socket.io');
+
 var app = require('../app');
 var debug = require('debug')('express-socket-bullmq:server');
 var http = require('http');
@@ -24,6 +28,11 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
+
+const io= new Server(server);
+chatSocket(io);
+
+emailQueue.add('welcomeEmail',{user:'John Doe', email: 'john@example.com'});
 
 server.listen(port);
 server.on('error', onError);
