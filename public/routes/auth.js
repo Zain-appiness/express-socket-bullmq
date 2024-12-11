@@ -88,7 +88,7 @@ router.get('/user/email/:email',async(req,res)=>{
       }
     });
     if(!user|| user.length==0){
-      res.status(400).json({
+      return res.status(400).json({
         message:'NO SUCH USER'
       });
     }
@@ -107,20 +107,18 @@ router.put('/update/:id',async(req,res)=>{
   const userData= req.body;
   try {
     if(!userData|| userData.length==0){
-      res.status(400).json({
+      return res.status(400).json({
         message:'NO UPDATE DATA PROVIDED'
       });
     }
 
     const user= await User.findByPk(userId);
 
-    if(!user){
-      if(!user|| user.length==0){
-        res.status(400).json({
+      if(!user){
+        return res.status(400).json({
           message:'NO SUCH USER'
         });
       }
-    }
 
     await user.update(userData);
 
@@ -143,13 +141,11 @@ router.delete('/delete/:id',async(req,res)=>{
         }
       });
 
-      if(!user){
         if(!user|| user.length==0){
-          res.status(400).json({
+          return res.status(400).json({
             message:'NO SUCH USER'
           });
         }
-      }
 
       const{email}= user;
 
